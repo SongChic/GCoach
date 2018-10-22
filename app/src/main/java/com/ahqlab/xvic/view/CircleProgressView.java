@@ -15,6 +15,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.ahqlab.xvic.R;
 import com.ahqlab.xvic.base.BaseView;
@@ -27,7 +30,7 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
 
     private int mDeviceWidth = 0, mViewRadius = 0, mPadding = 86;
     private int mStartColor, mEndColor;
-    private int mImage, mImgStartColor, mImgEndColor = -1, mAlpha = 100, mImgWidth, mMode = 0, mStepCount = 0;
+    private int mImage, mImgStartColor, mImgEndColor = -1, mAlpha = 100, mImgWidth, mMode = 0, mStepCount = 0, w, h;
     private int[] mButtonImage;
     private float outInteractBase = 0, inInteractBase = 0;
 
@@ -52,10 +55,10 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
                 if ( mCallback != null ) {
                     mBtnState = mBtnState ? false : true;
                     if ( mBtnState ) {
-                        setImage(mButtonImage[1]);
+                        if ( mButtonImage != null ) setImage(mButtonImage[1]);
                         start();
                     } else {
-                        setImage(mButtonImage[0]);
+                        if ( mButtonImage != null ) setImage(mButtonImage[0]);
                         stop();
                     }
                     invalidate();
@@ -87,6 +90,14 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
         mDeviceWidth = metrics.widthPixels;
         mPadding = XvicUtil.dpToPx(mPadding);
         mViewRadius = mImgWidth = mDeviceWidth - (mPadding * 2);
+//        this.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//        int viewW = this.getMeasuredWidth(), viewHeight = this.getMeasuredHeight();
+
+        if ( this.getParent() instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            this.setLayoutParams(params);
+        }
     }
     public void setImage( int imageResource ) {
         mImage = imageResource;
@@ -118,115 +129,13 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
         if ( mSteps != null && mSteps.size() > 0 ) {
             makeCircle(canvas);
             makeImg(canvas);
-            if ( mSteps.get(mStepCount).getType() == CircleProgress.PROGRESS_TYPE ) {
-
-            } else if ( mSteps.get(mStepCount).getType() == CircleProgress.ANIMATION_TYPE ) {
-
-            }
+//            if ( mSteps.get(mStepCount).getType() == CircleProgress.PROGRESS_TYPE ) {
+//
+//            } else if ( mSteps.get(mStepCount).getType() == CircleProgress.ANIMATION_TYPE ) {
+//
+//            }
         }
 
-//        if ( mMode == NORMAL_MODE ) {
-//            Paint paint = new Paint();
-//            paint.setStyle(Paint.Style.STROKE);
-//            paint.setStrokeWidth( XvicUtil.dpToPx(18) );
-//
-//            paint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mStartColor, mEndColor, Shader.TileMode.CLAMP));
-//            canvas.drawCircle(mViewRadius, mViewRadius, mViewRadius / 2, paint);
-//
-//            if (mProgressState) {
-//                paint = new Paint();
-//                paint.setStyle(Paint.Style.FILL);
-//                paint.setStrokeWidth( XvicUtil.dpToPx(18) );
-//                paint.setShadowLayer(10.0f, 0.0f, 2.0f, 0xFF000000);
-//                paint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mStartColor, mEndColor, Shader.TileMode.CLAMP));
-//                setLayerType(LAYER_TYPE_SOFTWARE, paint);
-//
-//                canvas.drawCircle(mViewRadius, mViewRadius, XvicUtil.dpToPx(18) / 2, paint);
-//            }
-//
-//            if ( mImage != -1 ) {
-//                Bitmap img = BitmapFactory.decodeResource(getResources(), mImage);
-//                if ( img == null )
-//                    return;
-//
-//                double aspectRatio = (double) img.getHeight() / (double) img.getWidth();
-//                int targetHeight = (int) (mImgWidth / 2 * aspectRatio);
-//                Bitmap result = Bitmap.createScaledBitmap(img, mImgWidth / 2, targetHeight, false);
-//                if (result != img) {
-//                    img.recycle();
-//                }
-//                Paint imgPaint = new Paint();
-//                if ( mAlpha != 100 )
-//                    imgPaint.setAlpha(255 * mAlpha / 100);
-//                if ( mImgStartColor != -1 && mImgEndColor != -1 ) {
-//                    Canvas imgCanvas = new Canvas(result);
-//                    Paint innerPaint = new Paint();
-//                    innerPaint.setShader(new LinearGradient(0, 0, 0, mPadding + (mViewRadius / 2) - (result.getHeight()), mImgStartColor, mImgEndColor, Shader.TileMode.CLAMP));
-//                    innerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-//                    imgCanvas.drawRect(0, 0, result.getWidth(), result.getHeight(), innerPaint);
-//                    imgPaint.setShader(new LinearGradient(0, 0, 0, mPadding + (mViewRadius / 2) - (result.getHeight()), mImgStartColor, mImgEndColor, Shader.TileMode.CLAMP));
-//                }
-//
-//                canvas.drawBitmap(result, mPadding + (mViewRadius / 2) - (result.getWidth() / 3), mPadding + (mViewRadius / 2) - (result.getHeight() / 2), imgPaint);
-//            }
-//        } else if ( mMode == ACTIVE_MODE ) {
-//            Paint outCirclePaint = new Paint();
-//            outCirclePaint.setStyle(Paint.Style.FILL);
-//            outCirclePaint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), Color.parseColor("#ecad8d"), Color.parseColor("#ef8f91"), Shader.TileMode.CLAMP));
-//            outCirclePaint.setAlpha(255 * 22 / 100);
-//
-//            Paint inCirclePaint = new Paint();
-//            inCirclePaint.setStyle(Paint.Style.FILL);
-//            inCirclePaint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), Color.parseColor("#ecad8d"), Color.parseColor("#ef8f91"), Shader.TileMode.CLAMP));
-//            inCirclePaint.setAlpha(255 * 40 / 100);
-//
-//            Paint circlePaint = new Paint();
-//            circlePaint.setStyle(Paint.Style.FILL);
-//            circlePaint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), Color.parseColor("#ecad8d"), Color.parseColor("#ef8f91"), Shader.TileMode.CLAMP));
-//            circlePaint.setAlpha(255 * 100 / 100);
-//
-//            if ( interaction != null ) {
-//                if ( outInteractBase >= mViewRadius / 2 ) {
-//                    outInteractBase = (mViewRadius - XvicUtil.dpToPx(60)) / 2;
-//                    inInteractBase = (mViewRadius - XvicUtil.dpToPx(60)) / 2;
-//                } else {
-//                    outInteractBase += 7;
-//                    if ( !(inInteractBase >= (mViewRadius - XvicUtil.dpToPx(30)) / 2) )
-//                        inInteractBase += 7;
-//                }
-//            }
-//
-//            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, outInteractBase, outCirclePaint);
-//            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, inInteractBase, inCirclePaint);
-//
-//            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, (mViewRadius - XvicUtil.dpToPx(60)) / 2, circlePaint);
-//
-//            if ( mImage != -1 ) {
-//                Bitmap img = BitmapFactory.decodeResource(getResources(), mImage);
-//                if ( img == null )
-//                    return;
-//
-//                double aspectRatio = (double) img.getHeight() / (double) img.getWidth();
-//                int targetHeight = (int) (mImgWidth / 2 * aspectRatio);
-//                result = Bitmap.createScaledBitmap(img, mImgWidth / 2, targetHeight, false);
-//                if (result != img) {
-//                    img.recycle();
-//                }
-//                Paint imgPaint = new Paint();
-//                if ( mAlpha != 100 )
-//                    imgPaint.setAlpha(255 * mAlpha / 100);
-//                if ( mImgStartColor != -1 && mImgEndColor != -1 ) {
-//                    imgCanvas = new Canvas(result);
-//                    Paint innerPaint = new Paint();
-//                    innerPaint.setShader(new LinearGradient(0, 0, 0, mPadding + (mViewRadius / 2) - (result.getHeight()), mImgStartColor, mImgEndColor, Shader.TileMode.CLAMP));
-//                    innerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-//                    imgCanvas.drawRect(0, 0, result.getWidth(), result.getHeight(), innerPaint);
-//                    imgPaint.setShader(new LinearGradient(0, 0, 0, mPadding + (mViewRadius / 2) - (result.getHeight()), mImgStartColor, mImgEndColor, Shader.TileMode.CLAMP));
-//                    imgCanvas.translate(-50, 0);
-//                }
-//                canvas.drawBitmap(result, mPadding + (mViewRadius / 2) - (result.getWidth() / 2), mPadding + (mViewRadius / 2) - (result.getHeight() / 2), imgPaint);
-//            }
-//        }
     }
     private void makeCircle( Canvas canvas ) {
         if ( mMode == CircleProgress.NORMAL_TYPE || mMode == CircleProgress.PROGRESS_TYPE ) {
@@ -235,7 +144,7 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
             paint.setStrokeWidth( XvicUtil.dpToPx(18) );
 
             paint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mStartColor, mEndColor, Shader.TileMode.CLAMP));
-            canvas.drawCircle(mViewRadius, mViewRadius, mViewRadius / 2, paint);
+            canvas.drawCircle(mViewRadius / 2 + XvicUtil.dpToPx(18) / 2, mViewRadius / 2 + XvicUtil.dpToPx(18) / 2, mViewRadius / 2, paint);
             if ( mMode == CircleProgress.PROGRESS_TYPE ) {
                 paint = new Paint();
                 paint.setStyle(Paint.Style.FILL);
@@ -244,7 +153,10 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
                 paint.setShader(new LinearGradient(mViewRadius, mViewRadius - (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mViewRadius + (mViewRadius / 2), mStartColor, mEndColor, Shader.TileMode.CLAMP));
                 setLayerType(LAYER_TYPE_SOFTWARE, paint);
 
-                canvas.drawCircle(mViewRadius, mViewRadius, XvicUtil.dpToPx(18) / 2, paint);
+                float x = (float) (mViewRadius * Math.sin( Math.toRadians(0) ));
+                float y = (float) (mViewRadius * Math.sin( Math.toRadians(0) ));
+
+                canvas.drawCircle(x, y, XvicUtil.dpToPx(18) / 2, paint);
             }
         } else if ( mMode == CircleProgress.ANIMATION_TYPE ) {
             Paint outCirclePaint = new Paint();
@@ -273,10 +185,10 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
                 }
             }
 
-            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, outInteractBase, outCirclePaint);
-            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, inInteractBase, inCirclePaint);
+            canvas.drawCircle(mViewRadius / 2, mViewRadius / 2, outInteractBase, outCirclePaint);
+            canvas.drawCircle(mViewRadius / 2, mViewRadius / 2, inInteractBase, inCirclePaint);
 
-            canvas.drawCircle(mPadding + mViewRadius / 2, mPadding + mViewRadius / 2, (mViewRadius - XvicUtil.dpToPx(60)) / 2, circlePaint);
+            canvas.drawCircle(mViewRadius / 2, mViewRadius / 2, (mViewRadius - XvicUtil.dpToPx(60)) / 2, circlePaint);
         }
 
     }
@@ -303,14 +215,15 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
                     imgCanvas.drawRect(0, 0, result.getWidth(), result.getHeight(), innerPaint);
                     imgPaint.setShader(new LinearGradient(0, 0, 0, mPadding + (mViewRadius / 2) - (result.getHeight()), mImgStartColor, mImgEndColor, Shader.TileMode.CLAMP));
                 }
+                float imgX = mMode == CircleProgress.PROGRESS_TYPE || mMode == CircleProgress.NORMAL_TYPE ? (mViewRadius / 2 + XvicUtil.dpToPx(18) / 2) : mViewRadius / 2, imgY = mMode == CircleProgress.PROGRESS_TYPE || mMode == CircleProgress.NORMAL_TYPE ? (mViewRadius / 2 + XvicUtil.dpToPx(18) / 2) : mViewRadius / 2;
 
-                canvas.drawBitmap(result, mPadding + (mViewRadius / 2) - (result.getWidth() / 3), mPadding + (mViewRadius / 2) - (result.getHeight() / 2), imgPaint);
+                canvas.drawBitmap(result, imgX - result.getWidth() / 2, imgY  - result.getHeight() / 2, imgPaint);
             }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(mDeviceWidth, mViewRadius * 2);
+        setMeasuredDimension(mViewRadius + XvicUtil.dpToPx(18), mViewRadius + XvicUtil.dpToPx(18));
     }
     @Override
     public void run() {
@@ -357,7 +270,7 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
             mButtonImage = mSteps.get(mStepCount).getBtnImageResource();
         }
         mCallback = mSteps.get(mStepCount).getOnClick() != null ? mSteps.get(mStepCount).getOnClick() : null;
-        mImage = mImage == 0 ? R.drawable.address : mImage;
+//        mImage = mImage == 0 ? R.drawable.address : mImage;
         if ( mMode == CircleProgress.ANIMATION_TYPE ) {
             mPadding = 66;
             mPadding = XvicUtil.dpToPx(mPadding);
@@ -370,4 +283,5 @@ public class CircleProgressView extends BaseView<CircleProgressView> implements 
             mImgWidth = mImgWidth / mSteps.get(mStepCount).getSize();
     }
     /* new code (e) */
+
 }

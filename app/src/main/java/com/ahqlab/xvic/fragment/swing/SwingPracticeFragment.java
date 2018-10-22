@@ -38,29 +38,24 @@ public class SwingPracticeFragment extends BaseFragment<SwingPracticeFragment> {
         });
 
         List<CircleProgress> steps = new ArrayList<>();
-        CircleProgress step = CircleProgress.builder().step(1).alpha(1).type(CircleProgress.PROGRESS_TYPE).build();
-        steps.add(step);
-        step = CircleProgress.builder().step(2).type(CircleProgress.ANIMATION_TYPE).btnImageResource(
-                new int[] {
-                        R.drawable.play,
-                        R.drawable.pause
-                }
-        ).size(CircleProgress.TINY_SIZE).onClick(new CircleProgress.ImageOnClick() {
+        CircleProgress step = CircleProgress.builder().step(2).type(CircleProgress.ANIMATION_TYPE).imageResorce(R.drawable.play).size(CircleProgress.TINY_SIZE).onClick(new CircleProgress.ImageOnClick() {
             @Override
             public void onClick(boolean state) {
-
+                binding.circleProgressView.changeStep();
             }
         }).build();
         steps.add(step);
-        binding.circleProgressView.setStep(steps);
-
-
-        new Handler().postDelayed(new Runnable() {
+        step = CircleProgress.builder().step(2).type(CircleProgress.ANIMATION_TYPE).imageResorce(R.drawable.sound_icon).size(CircleProgress.MIDDLE_SIZE).onClick(new CircleProgress.ImageOnClick() {
             @Override
-            public void run() {
+            public void onClick(boolean state) {
                 binding.circleProgressView.changeStep();
             }
-        }, 2000);
+        }).build();
+        steps.add(step);
+        step = CircleProgress.builder().step(1).alpha(1).type(CircleProgress.PROGRESS_TYPE).build();
+
+        steps.add(step);
+        binding.circleProgressView.setStep(steps);
         return binding.getRoot();
     }
 

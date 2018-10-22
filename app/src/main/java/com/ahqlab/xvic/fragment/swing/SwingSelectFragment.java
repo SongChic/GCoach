@@ -56,10 +56,10 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
                     new int[]{
                             R.drawable.step_01_pose,
                             R.drawable.step_02_pose,
-                            R.drawable.step_01_pose,
-                            R.drawable.step_01_pose,
-                            R.drawable.step_01_pose,
-                            R.drawable.step_01_pose
+                            R.drawable.step_03_pose,
+                            R.drawable.step_04_pose,
+                            R.drawable.step_05_pose,
+                            R.drawable.step_06_pose
                     }
 
             );
