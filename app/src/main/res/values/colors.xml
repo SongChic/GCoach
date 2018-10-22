@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="xvic_primary_color">#e03129</color>
+    <color name="xvic_title_color">#1d1d1d</color>
+    <color name="xvic_background_color">#f4f4f6</color>
+    <color name="xvic_step_default_color">#707070</color>
+    <color name="xvic_tab_color">#666666</color>
+    <color name="xvic_gray">#aaaaaa</color>
+
+    <color name="xvic_default_text_color">#1d1d1d</color>
+    <color name="xvic_white_color">#ffffff</color>
+    <color name="xvic_default_checkbox_color">#f0f0f0</color>
+
+</resources>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fragment"
+            type="com.ahqlab.xvic.fragment.pose.PoseCorrectFragment"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:id="@+id/checkbox_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            app:scale_base_width="360"
+            app:scale_base_height="270">
+                <com.ahqlab.xvic.view.CustomCheckBox
+                    app:scale_left="23"
+                    app:scale_width="315"
+                    app:scale_height="58"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="head up"
+                    android:textSize="16sp"
+                    android:background="@drawable/correct_btn"/>
+                <com.ahqlab.xvic.view.CustomCheckBox
+                    app:scale_left="23"
+                    app:scale_top="70"
+                    app:scale_width="315"
+                    app:scale_height="58"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="sway"
+                    android:textSize="16sp"
+                    android:background="@drawable/correct_btn"/>
+                <com.ahqlab.xvic.view.CustomCheckBox
+                    app:scale_left="23"
+                    app:scale_top="140"
+                    app:scale_width="315"
+                    app:scale_height="58"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="flying elbow"
+                    android:textSize="16sp"
+                    android:background="@drawable/correct_btn"/>
+                <com.ahqlab.xvic.view.CustomCheckBox
+                    app:scale_left="23"
+                    app:scale_top="210"
+                    app:scale_width="315"
+                    app:scale_height="58"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="over swing"
+                    android:textSize="16sp"
+                    android:background="@drawable/correct_btn"/>
+        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:scale_base_width="360"
+            app:scale_base_height="95">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:scale_left="29"
+                app:scale_width="302"
+                app:scale_height="150">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="표준 자세 설정"
+                        android:textSize="14sp"/>
+                    <Button
+                        android:id="@+id/setting_btn"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button"
+                        android:minHeight="0dp"
+                        android:text="설정하기"
+                        android:onClick="@{fragment::onClick}"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자세 교정 설정"
+                        android:textSize="14sp"/>
+                    <Button
+                        android:id="@+id/start_btn"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_button"
+                        android:minHeight="0dp"
+                        android:textSize="14sp"
+                        android:text="시작"
+                        android:onClick="@{fragment::onClick}"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+    </RelativeLayout>
+
+</layout>
