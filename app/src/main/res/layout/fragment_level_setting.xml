@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scale_base_width="360"
+            app:scale_base_height="640">
+
+            <com.ahqlab.xvic.view.CustomSeekbar
+                android:id="@+id/level_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/custom_seekbar_style"
+                app:scale_width="360"
+                app:scale_height="35"
+                app:scale_top="50"/>
+
+        </com.ssomai.android.scalablelayout.ScalableLayout>
+
+    </RelativeLayout>
+</layout>

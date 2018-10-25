@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.ahqlab.xvic.R;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.databinding.FragmentSettingMainBinding;
-import com.ahqlab.xvic.fragment.pose.PoseCorrectFragment;
 
 public class SettingMainFragment extends BaseFragment {
     private FragmentSettingMainBinding binding;
@@ -29,7 +28,7 @@ public class SettingMainFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting_main, container, false);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.setting_fragment_wrap, new BluetoothSettingFragment());
+        ft.replace(R.id.setting_fragment_wrap, new SettingFragment());
         ft.commit();
         return binding.getRoot();
     }

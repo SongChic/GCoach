@@ -6,12 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.ahqlab.xvic.R;
+import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.constant.XvicConstant;
 import com.ahqlab.xvic.databinding.FragmentSwingSelectBinding;
@@ -25,10 +27,14 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
     private FragmentSwingSelectBinding binding;
     private RelativeLayout wrap;
     private int level = 0;
+    String title = "스윙 구간 선택";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setTitle("스윙 구간 선택");
+        Log.e(TAG, "onCreateView");
+        ((BaseActivity) getActivity()).getFragments()[0] = this;
+        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((BaseActivity) getActivity()).setFragment(this);
         if ( wrap != null ) {
             return wrap;
         } else {
@@ -115,5 +121,14 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void onFragmentSelected(BaseActivity activity) {
+        activity.setTitle(title);
+    }
+    @Override
+    public String getTitle() {
+        return title;
     }
 }

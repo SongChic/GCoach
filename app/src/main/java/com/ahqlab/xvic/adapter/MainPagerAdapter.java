@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.fragment.pose.PoseMainFragment;
 import com.ahqlab.xvic.fragment.setting.SettingMainFragment;
 import com.ahqlab.xvic.fragment.swing.SwingMainFragment;
@@ -11,6 +12,7 @@ import com.ahqlab.xvic.fragment.swing.SwingSelectFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private int mTabCount;
+    private BaseFragment mFragment;
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -37,4 +39,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mTabCount;
     }
+    public void setFragment( BaseFragment fragment ) {
+        mFragment = fragment;
+    }
+
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ahqlab.xvic.R;
+import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.databinding.FragmentPoseCorrectBinding;
 import com.ahqlab.xvic.view.CustomCheckBox;
@@ -18,10 +19,12 @@ import com.ahqlab.xvic.view.CustomCheckBox;
 public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
     private FragmentPoseCorrectBinding binding;
     int position = -1;
+    String title = "자세교정";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_correct, container, false);
+        ((BaseActivity) getActivity()).getFragments()[1] = this;
         binding.setFragment(this);
         for ( int i = 0; i < binding.checkboxWrap.getChildCount(); i++ ) {
             final int finalI = i;
@@ -42,7 +45,7 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
                 }
             });
         }
-        setTitle("자세 교정");
+//        setTitle("자세 교정");
         return binding.getRoot();
     }
     private void initCheckState () {
@@ -62,4 +65,13 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
         }
     }
 
+    @Override
+    public void onFragmentSelected(BaseActivity activity) {
+        activity.setTitle(title);
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
 }

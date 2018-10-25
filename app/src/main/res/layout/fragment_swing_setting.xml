@@ -11,13 +11,16 @@
         android:layout_height="match_parent">
 
         <com.ahqlab.xvic.view.CircleProgressView
+            android:layout_marginTop="80dp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/circle_progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:startColor="#edb18e"
             app:endColor="#ef8f93"/>
         <TextView
-            android:layout_below="@+id/circle_progress_view"
+            android:layout_marginBottom="110dp"
+            android:layout_alignParentBottom="true"
             android:id="@+id/swing_setting_info"
             android:gravity="center"
             android:layout_width="match_parent"

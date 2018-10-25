@@ -2,41 +2,41 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
+        <variable
+            name="fragment"
+            type="com.ahqlab.xvic.fragment.setting.BluetoothSettingFragment"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.ahqlab.xvic.view.CircleProgressView
+            android:layout_centerHorizontal="true"
             android:id="@+id/circle_progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:startColor="#edb08e"
             app:endColor="#ef8f93"/>
-
-        <TextView
+        <ProgressBar
             android:layout_below="@+id/circle_progress_view"
-            android:id="@+id/info_text"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textColor="#1d1d1d"
-            android:text=""/>
-
-        <Button
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/back_btn"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/scan_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_button"
-            android:minHeight="0dp"
-            android:text="뒤로가기"/>
-
+            style="?android:attr/progressBarStyle"/>
+        <ExpandableListView
+            android:layout_above="@+id/search_btn"
+            android:id="@+id/bluetooth_list"
+            android:layout_below="@+id/scan_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/search_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="검색"
+            android:onClick="@{fragment::onClick}"/>
     </RelativeLayout>
 
 </layout>

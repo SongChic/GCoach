@@ -23,7 +23,7 @@ public class Splash extends BaseActivity<Splash> {
             public void run() {
                 move();
             }
-        }, 1000);
+        }, 5000);
     }
     private void move() {
         startActivity(new Intent(this, MainActivity.class));
