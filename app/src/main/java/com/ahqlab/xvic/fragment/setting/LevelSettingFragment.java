@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.ahqlab.xvic.R;
+import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.databinding.FragmentLevelSettingBinding;
 
@@ -24,10 +25,13 @@ public class LevelSettingFragment extends BaseFragment<LevelSettingFragment> {
             levelMiddle = Color.parseColor("#f9ca87"),
             levelHigh = Color.parseColor("#f17d7e"),
             colorFrom;
+    private String title = "난이도 설정";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_level_setting, container, false);
+        ((BaseActivity) getActivity()).getFragments()[2] = this;
+        setTitleStr(title);
         colorFrom = levelLow;
         binding.levelSeekbar.setMax(100);
         binding.levelSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

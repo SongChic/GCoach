@@ -52,7 +52,16 @@ public class SettingFragment extends BaseFragment<SettingFragment> implements Vi
     @Override
     public void onClick(View v) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        Fragment fragment = null;
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if ( getActivity() == null )
+                    return;
+                BaseFragment fragment = ((BaseActivity) getActivity()).getFragments()[2];
+                fragment.setTitle(fragment.getTitle());
+            }
+        });
+        BaseFragment fragment = null;
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){ return; }
         switch (v.getId()) {
             case R.id.bluetooth_btn :
@@ -62,6 +71,7 @@ public class SettingFragment extends BaseFragment<SettingFragment> implements Vi
                 fragment = new LevelSettingFragment();
                 break;
         }
+        fragment.onFragmentSelected(((BaseActivity) getActivity()));
         transaction.replace(R.id.setting_fragment_wrap, fragment);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
@@ -75,7 +85,15 @@ public class SettingFragment extends BaseFragment<SettingFragment> implements Vi
     }
 
     @Override
+    public void onFragmentSelected() {
+        super.onFragmentSelected();
+
+    }
+
+    @Override
     public void onFragmentSelected(BaseActivity activity) {
-        activity.setTitle(title);
+        setTitleStr(title);
+        super.onFragmentSelected(activity);
+//        activity.setTitle(title);
     }
 }

@@ -20,11 +20,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:progressDrawable="@drawable/custom_seekbar_style"
+                android:thumb="@drawable/seek_bar_thumb"
+                android:splitTrack="false"
                 app:scale_width="360"
                 app:scale_height="35"
                 app:scale_top="50"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:scale_width="360"
+                app:scale_height="60"
+                app:scale_top="113"
+                >
+
+                <com.ahqlab.xvic.view.CircleTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="하"/>
+                <com.ahqlab.xvic.view.CircleTextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:circleColor="#f9ca87"
+                    android:text="중"/>
+                <com.ahqlab.xvic.view.CircleTextView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:circleColor="#f17d7e"
+                    android:textColor="#1d1d1d"
+                    android:text="상"/>
+
+            </RelativeLayout>
 
         </com.ssomai.android.scalablelayout.ScalableLayout>
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="연습 정확도의 난이도를\n상, 중, 하로 설정 할 수 있습니다."
+            android:textSize="20sp"
+            />
 
     </RelativeLayout>
 </layout>

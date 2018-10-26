@@ -1,10 +1,12 @@
 package com.ahqlab.xvic.fragment.swing;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,13 +30,19 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
     private RelativeLayout wrap;
     private int level = 0;
     String title = "스윙 구간 선택";
+    private boolean chageState = false;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e(TAG, "onCreateView");
         ((BaseActivity) getActivity()).getFragments()[0] = this;
-        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((BaseActivity) getActivity()).setFragment(this);
+        if ( chageState ) {
+            setTitle(title);
+
+        }
+        chageState = false;
         if ( wrap != null ) {
             return wrap;
         } else {
@@ -78,25 +86,34 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
             });
             return wrap;
         }
-
     }
     public static Fragment newInstance() {
         return new SwingSelectFragment();
     }
     public void onClick ( View v ) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if ( getActivity() == null )
+                    return;
+                BaseFragment fragment = ((BaseActivity) getActivity()).getFragments()[0];
+                fragment.setTitle(fragment.getTitle());
+            }
+        });
         BaseFragment fragment = null;
         Bundle bundle = new Bundle();
 
         switch (v.getId()) {
             case R.id.setting_btn :
                 fragment = new SwingSettingFragment();
+                fragment.onFragmentSelected(((BaseActivity) getActivity()));
                 bundle.putInt(XvicConstant.SWING_LEVEL_KEY, level);
                 fragment.setArguments(bundle);
                 break;
             case R.id.start_btn :
                 fragment = new SwingPracticeFragment();
-
+                fragment.onFragmentSelected(((BaseActivity) getActivity()));
                 ArrayList<CircleProgress> steps = new ArrayList<>();
                 CircleProgress step = CircleProgress.builder().step(1).alpha(1).type(CircleProgress.PROGRESS_TYPE).build();
                 steps.add(step);
@@ -126,9 +143,15 @@ public class SwingSelectFragment extends BaseFragment<SwingSelectFragment> {
     @Override
     public void onFragmentSelected(BaseActivity activity) {
         activity.setTitle(title);
+        chageState = true;
     }
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

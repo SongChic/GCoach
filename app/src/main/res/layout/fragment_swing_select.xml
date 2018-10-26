@@ -31,16 +31,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:scale_width="360"
-                app:scale_height="240"
+                app:scale_height="300"
                 app:scale_top="120"
                 />
+        </com.ssomai.android.scalablelayout.ScalableLayout>
 
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:scale_base_width="360"
+            app:scale_base_height="95">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:scale_top="450"
-                app:scale_width="360"
+                app:scale_left="29"
+                app:scale_width="302"
                 app:scale_height="150">
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -86,7 +94,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
         </com.ssomai.android.scalablelayout.ScalableLayout>
 
     </RelativeLayout>

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ahqlab.xvic.R;
 import com.ahqlab.xvic.adapter.XvicBluetoothAdapter;
+import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.broadcast.BluetoothReceiver;
 import com.ahqlab.xvic.databinding.FragmentBluetoothSettingBinding;
@@ -44,6 +45,7 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
     private List<BluetoothItem> mPairedList;
     private XvicBluetoothAdapter mAdapter;
     private String connectBtName;
+    private String title = "블루투스 설정";
 
     private final String AUTO_CONNECT_UUID_STR = "00:11:67:11:1B:DA";
 
@@ -57,6 +59,7 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bluetooth_setting, container, false);
+        ((BaseActivity) getActivity()).getFragments()[2] = this;
         binding.setFragment(this);
         List<CircleProgress> steps = new ArrayList<>();
         CircleProgress step = CircleProgress.builder().imageResorce(R.drawable.bluetooth_icon).startColor(Color.parseColor("#9d9d9d")).endColor(Color.parseColor("#777777")).startImgColor(Color.parseColor("#aaaaaa")).endImgColor(Color.parseColor("#aaaaaa")).type(CircleProgress.NORMAL_TYPE).size(CircleProgress.SMALL_SIZE).padding(XvicUtil.dpToPx(100)).build();
@@ -68,52 +71,64 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
         mPairedList = new ArrayList<>();
 
 
-        checkConnected();
+
 
         if ( btAdapter == null ) {
             Toast.makeText(getContext(), "블루투스를 지원하지 않는 기기 입니다.", Toast.LENGTH_SHORT).show();
             binding.circleProgressView.setAlpha(20);
+            binding.scanProgress.setVisibility(View.INVISIBLE);
+            binding.searchBtn.setEnabled(false);
         } else {
             for ( BluetoothDevice device : btAdapter.getBondedDevices() ) {
                 BluetoothItem item = BluetoothItem.builder().name(device.getName()).device(device).uuid(device.getAddress()).build();
                 Log.e(TAG, String.format("state : %d", device.getBondState()));
                 mPairedList.add(item);
             }
-        }
+            checkConnected();
 
-        mReceiver = new BluetoothReceiver();
-        mReceiver.setOnFoundListener(new BluetoothReceiver.OnStateListener() {
-            @Override
-            public void onFoundListener(BluetoothDevice device) {
-                newData(device);
-                if ( device.getAddress().equals(AUTO_CONNECT_UUID_STR) ) {
-                    try {
-                        createBond(device);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            mReceiver = new BluetoothReceiver();
+            mReceiver.setOnFoundListener(new BluetoothReceiver.OnStateListener() {
+                @Override
+                public void onFoundListener(BluetoothDevice device) {
+                    newData(device);
+                    if ( device.getAddress().equals(AUTO_CONNECT_UUID_STR) ) {
+                        try {
+                            if ( createBond(device) ) {
+                                for ( int i = 0; i < mItems.size(); i++ ) {
+                                    if ( mItems.get(i).getUuid().equals(device.getAddress()) )
+                                        mItems.remove(i);
+                                }
+
+                                BluetoothItem item = BluetoothItem.builder().name(device.getName() != null || !device.getName().equals("") ? device.getName() : device.getAddress()).device(device).uuid(device.getAddress()).build();
+                                mPairedList.add(item);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onScanStateListener(boolean state) {
-                if ( state ) {
-                    binding.scanProgress.setVisibility(View.VISIBLE);
-                } else {
-                    binding.scanProgress.setVisibility(View.INVISIBLE);
+                @Override
+                public void onScanStateListener(boolean state) {
+                    if ( state ) {
+                        binding.scanProgress.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.scanProgress.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
-        });
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            });
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(BluetoothDevice.ACTION_FOUND);
+            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 
-        getActivity().registerReceiver(mReceiver, filter);
-        btAdapter.startDiscovery();
+            getActivity().registerReceiver(mReceiver, filter);
+            btAdapter.startDiscovery();
+        }
 
         List<String> groupList = new ArrayList<>();
         groupList.add("등록된 디바이스");
@@ -137,7 +152,7 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(mReceiver);
+        if ( mReceiver != null ) getActivity().unregisterReceiver(mReceiver);
     }
     public void newData( BluetoothDevice device ) {
         BluetoothItem item = null;
@@ -220,14 +235,6 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
         Class class1 = Class.forName("android.bluetooth.BluetoothDevice");
         Method createBondMethod = class1.getMethod("createBond");
         Boolean returnValue = (Boolean) createBondMethod.invoke(btDevice);
-        for ( int i = 0; i < mItems.size(); i++ ) {
-            if ( mItems.get(i).getUuid().equals(btDevice.getAddress()) )
-                mItems.remove(i);
-        }
-
-        BluetoothItem item = BluetoothItem.builder().name(btDevice.getName() != null || !btDevice.getName().equals("") ? btDevice.getName() : btDevice.getAddress()).device(btDevice).uuid(btDevice.getAddress()).build();
-        mPairedList.add(item);
-        mAdapter.notifyDataSetChanged();
 //        requestConnect(btDevice, UUID.nameUUIDFromBytes(btDevice.getAddress().getBytes()));
         return returnValue.booleanValue();
     }
@@ -261,5 +268,14 @@ public class BluetoothSettingFragment extends BaseFragment<BluetoothSettingFragm
         return device.createInsecureRfcommSocketToServiceRecord(uuid);
     }
 
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void onFragmentSelected(BaseActivity activity) {
+        activity.setTitle(title);
+    }
 
 }

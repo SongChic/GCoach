@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ahqlab.xvic.R;
+import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
 import com.ahqlab.xvic.databinding.FragmentPoseMainBinding;
 import com.ahqlab.xvic.fragment.swing.SwingSelectFragment;
@@ -21,6 +22,7 @@ public class PoseMainFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_main, container, false);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

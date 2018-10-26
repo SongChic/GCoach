@@ -4,6 +4,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
     private FragmentPoseCorrectBinding binding;
     int position = -1;
     String title = "자세교정";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
                 }
             });
         }
-//        setTitle("자세 교정");
+        position = -1;
         return binding.getRoot();
     }
     private void initCheckState () {
@@ -53,16 +57,40 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
             ((CustomCheckBox) binding.checkboxWrap.getChildAt(i)).setChecked(false);
     }
     public void onClick( View v ) {
+        FragmentManager fm = getFragmentManager();
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if ( getActivity() == null )
+                    return;
+                BaseFragment fragment = ((BaseActivity) getActivity()).getFragments()[1];
+                fragment.setTitle(fragment.getTitle());
+            }
+        });
+        FragmentTransaction ft = fm.beginTransaction();
+        BaseFragment fragment = null;
+
         switch (v.getId()) {
             case R.id.setting_btn :
+                if ( position == -1 ) {
+                    Toast.makeText(getContext(), "교정할 자세를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                fragment = new PoseSettingFragment();
                 break;
             case R.id.start_btn :
                 if ( position == -1 ) {
                     Toast.makeText(getContext(), "교정할 자세를 선택해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                fragment = new PosePracticeFragment();
                 break;
         }
+        fragment.onFragmentSelected(((BaseActivity) getActivity()));
+        ft.replace(R.id.pose_fragment_wrap, fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @Override
@@ -73,5 +101,12 @@ public class PoseCorrectFragment extends BaseFragment<PoseCorrectFragment> {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if ( isVisibleToUser )
+            ((BaseActivity) getActivity()).setTitle(title);
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

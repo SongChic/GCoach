@@ -2,27 +2,31 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-
+        <variable
+            name="fragment"
+            type="com.ahqlab.xvic.fragment.pose.PosePracticeFragment"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.ahqlab.xvic.view.CircleProgressView
+            android:layout_marginTop="60dp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/circle_progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:startColor="#edb08e"
             app:endColor="#ef8f93"/>
-
         <TextView
-            android:layout_below="@+id/circle_progress_view"
-            android:id="@+id/info_text"
+            android:layout_marginBottom="110dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/swing_setting_info"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:textColor="#1d1d1d"
-            android:text=""/>
+            android:text="스윙 연습을 시작합니다.\n어드레스 자세를 취해주세요."/>
 
     </RelativeLayout>
 

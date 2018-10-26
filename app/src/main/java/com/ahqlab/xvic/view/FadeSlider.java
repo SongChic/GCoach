@@ -1,6 +1,7 @@
 package com.ahqlab.xvic.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.ahqlab.xvic.R;
+import com.ahqlab.xvic.util.XvicUtil;
 
 public class FadeSlider extends RelativeLayout implements View.OnClickListener {
     public interface IndexCallback {
@@ -61,9 +63,11 @@ public class FadeSlider extends RelativeLayout implements View.OnClickListener {
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
         for ( int i = 0; i < items.length; i++ ) {
             ImageView itemView = new ImageView(getContext());
+
             if ( i != 0 )
                 itemView.animate().alpha(0).setDuration(0).withLayer();
             itemView.setImageResource(items[i]);
+            itemView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             itemWrap.addView(itemView);
         }
         itemWrap.setLayoutParams(params);

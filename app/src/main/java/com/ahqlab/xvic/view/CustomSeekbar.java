@@ -34,16 +34,7 @@ public class CustomSeekbar extends AppCompatSeekBar {
         init();
     }
     private void init () {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.seek_bar_thumb);
-        Bitmap thumb = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-//        this.getProgressDrawable().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            this.getThumb().setColorFilter(Color.parseColor("#b6faa1"), PorterDuff.Mode.MULTIPLY);
-//        }
-        Drawable thumbDrawable = new BitmapDrawable(getResources(), bitmap);
-        setThumb(thumbDrawable);
         this.setMinimumHeight(XvicUtil.dpToPx(12));
-
     }
 
 }

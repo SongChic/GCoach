@@ -1,4 +1,4 @@
-package com.ahqlab.xvic.fragment.swing;
+package com.ahqlab.xvic.fragment.pose;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -8,7 +8,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import android.view.ViewGroup;
 import com.ahqlab.xvic.R;
 import com.ahqlab.xvic.base.BaseActivity;
 import com.ahqlab.xvic.base.BaseFragment;
-import com.ahqlab.xvic.databinding.FragmentSwingPracticeBinding;
+import com.ahqlab.xvic.databinding.FragmentPosePracticeBinding;
 import com.ahqlab.xvic.domain.CircleProgress;
 import com.ahqlab.xvic.fragment.common.ResultFragment;
 
@@ -27,19 +26,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-public class SwingPracticeFragment extends BaseFragment<SwingPracticeFragment> {
-    private FragmentSwingPracticeBinding binding;
+public class PosePracticeFragment extends BaseFragment<PosePracticeFragment> {
+    private FragmentPosePracticeBinding binding;
     private TextToSpeech tts;
-    private String title = "스윙 연습 모드";
+    private String title = "자세 교정 모드";
     private View root;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_swing_practice, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pose_practice, container, false);
         if ( root == null ) {
             root = binding.getRoot();
-            ((BaseActivity) getActivity()).getFragments()[0] = this;
-            ArrayList<CircleProgress> data = (ArrayList<CircleProgress>) getArguments().getSerializable("test");
+            ((BaseActivity) getActivity()).getFragments()[1] = this;
 
             tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
                 @Override
@@ -85,7 +83,7 @@ public class SwingPracticeFragment extends BaseFragment<SwingPracticeFragment> {
                                         bundle.putInt("selected", selected);
                                         fragment.setArguments(bundle);
                                         FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        ft.replace(R.id.swing_root, fragment);
+                                        ft.replace(R.id.pose_fragment_wrap, fragment);
                                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                         ft.addToBackStack(null);
                                         ft.commit();

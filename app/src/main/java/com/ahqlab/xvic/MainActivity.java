@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.ahqlab.xvic.adapter.MainPagerAdapter;
 import com.ahqlab.xvic.base.BaseActivity;
@@ -23,14 +24,8 @@ import com.ahqlab.xvic.view.FadeSlider;
 
 public class MainActivity extends BaseActivity<MainActivity> {
     private ActivityMainBinding binding;
-    private FadeSlider slider;
-    private TabLayout tabLayout;
     private BackPressedListener mBackListener;
-    private String[] titles = {
-            "스윙 구간 선택",
-            "자세 교정",
-            "설정"
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +37,7 @@ public class MainActivity extends BaseActivity<MainActivity> {
                 new PoseCorrectFragment(),
                 new SettingFragment()
         });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if ( btAdapter == null ) {
@@ -64,6 +60,8 @@ public class MainActivity extends BaseActivity<MainActivity> {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 binding.mainViewPager.setCurrentItem(tab.getPosition());
+                getFragments()[tab.getPosition()].onFragmentSelected(MainActivity.this);
+                getFragments()[tab.getPosition()].setBackButton();
             }
 
             @Override
@@ -76,28 +74,7 @@ public class MainActivity extends BaseActivity<MainActivity> {
 
             }
         });
-        binding.mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                getFragments()[i].onFragmentSelected(MainActivity.this);
-//                String frgmentTitle = MainActivity.this.mFragment.getTitle();
-//                if ( MainActivity.this.mFragment instanceof SwingSelectFragment || MainActivity.this.mFragment instanceof PoseCorrectFragment || MainActivity.this.mFragment instanceof SettingFragment) {
-//                    if ( frgmentTitle != null && !frgmentTitle.equals("") ) {
-//                        setTitle(frgmentTitle);
-//                    }
-//                } else
-//                setTitle(titles[i]);
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+        binding.mainViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
         binding.mainViewPager.setCurrentItem(0);
     }
 
@@ -119,10 +96,7 @@ public class MainActivity extends BaseActivity<MainActivity> {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -139,8 +113,16 @@ public class MainActivity extends BaseActivity<MainActivity> {
             }
         }
     }
-    public void fragmentSetTitle ( String title ) {
-        this.setTitle(title);
-    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+//                finish();
+                onBackPressed();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

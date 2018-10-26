@@ -29,21 +29,5 @@
             android:textColor="#1d1d1d"
             android:text="표준 스윙을 설정합니다.\n어드레스 자세를 취해주세요."/>
 
-        <Button
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/back_btn"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button"
-            android:minHeight="0dp"
-            android:text="뒤로가기"
-            android:onClick="@{fragment::onClick}"/>
-
-
-
     </RelativeLayout>
 </layout>

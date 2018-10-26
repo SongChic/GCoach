@@ -27,5 +27,6 @@ public class Splash extends BaseActivity<Splash> {
     }
     private void move() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
