@@ -52,6 +52,7 @@ public class SwingPracticeFragment extends BaseFragment<SwingPracticeFragment> {
             CircleProgress step = CircleProgress.builder().step(2).type(CircleProgress.ANIMATION_TYPE).imageResorce(R.drawable.play).size(CircleProgress.TINY_SIZE).onClick(new CircleProgress.ImageOnClick() {
                 @Override
                 public void onClick(boolean state) {
+                    binding.swingSettingInfo.setText("표준 스윙을 설정합니다.\n어드레스 자세를 취해주세요.");
                     binding.circleProgressView.changeStep();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -70,11 +71,13 @@ public class SwingPracticeFragment extends BaseFragment<SwingPracticeFragment> {
                     if (percent >= 100) {
                         binding.circleProgressView.stop();
                         binding.circleProgressView.changeStep();
+                        binding.swingSettingInfo.setText("표준 스윙을 시작합니다.\n기준 자세에서 2초간 유지해주세요.");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 binding.circleProgressView.changeStep();
                                 binding.circleProgressView.start();
+                                binding.swingSettingInfo.setText("어드레스 확인 되었습니다.\n연습 스윙을 하세요.");
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {

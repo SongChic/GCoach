@@ -42,10 +42,12 @@ public class PoseSettingFragment extends BaseFragment<PoseSettingFragment> {
                 if ( percent >= 100 ) {
                     binding.circleProgressView.stop();
                     binding.circleProgressView.changeStep();
+                    binding.swingSettingInfo.setText("표준 자세를 시작합니다.\n기준 자세에서 2초간 유지해주세요.");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             binding.circleProgressView.changeStep();
+                            binding.swingSettingInfo.setText("표준 자세를 설정이 완료되었습니다.");
                         }
                     }, 2000);
                 }
